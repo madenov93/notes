@@ -1,0 +1,58 @@
+{
+  "name": "apple-notes-clone",
+  "version": "1.0.0",
+  "description": "Apple Notes-style notes app for Windows 11",
+  "main": "src/main.js",
+  "author": "Sultan",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "build:portable": "electron-builder --win portable --x64",
+    "build:installer": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "electron-store": "^8.2.0"
+  },
+  "build": {
+    "appId": "com.sultan.applenotesclone",
+    "productName": "Notes",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Notes"
+    },
+    "portable": {
+      "artifactName": "Notes-Portable-${version}.exe"
+    }
+  }
+}
