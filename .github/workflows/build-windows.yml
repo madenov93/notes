@@ -1,0 +1,42 @@
+name: Build Windows .exe
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Windows installer and portable
+        run: npm run build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload installer as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Notes-Installer
+          path: dist/*Setup*.exe
+          retention-days: 30
+
+      - name: Upload portable as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Notes-Portable
+          path: dist/*Portable*.exe
+          retention-days: 30
